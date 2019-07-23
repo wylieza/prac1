@@ -6,7 +6,7 @@ Prac: 1
 Date: <21/07/2019>
 """
 
-# import Relevant Librares
+#Librares
 import RPi.GPIO as GPIO
 import time
 
@@ -15,15 +15,18 @@ import time
 #globals
 count = 0
 
-#pins
+#GPIO
+#set board mode
 GPIO.setmode(GPIO.BOARD)
 
+#name pinouts
 led2 = 11
 led1 = 13
 led0 = 15
 btn0 = 16
 btn1 = 18
 
+#configure gpio pins
 GPIO.setup(led0, GPIO.OUT)
 GPIO.setup(led1, GPIO.OUT)
 GPIO.setup(led2, GPIO.OUT)
@@ -31,7 +34,7 @@ GPIO.setup(btn0, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(btn1, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 #methods
-def callback_method_btn0(channel): #incremet
+def callback_method_btn0(channel): #incremet counter
     global count
     if(count >= 7):
         count = 0
@@ -39,7 +42,7 @@ def callback_method_btn0(channel): #incremet
         count += 1
 
 
-def callback_method_btn1(channel): #decrement
+def callback_method_btn1(channel): #decrement counter
     global count
     if(count <= 0):
         count = 7
@@ -48,37 +51,36 @@ def callback_method_btn1(channel): #decrement
 
 
 #interrupts
-#GPIO.add_event_detect(BTN_B, GPIO.RISING, method_on_interrupt)
 GPIO.add_event_detect(btn0, GPIO.FALLING, callback=callback_method_btn0,bouncetime=250)
 GPIO.add_event_detect(btn1, GPIO.FALLING, callback=callback_method_btn1,bouncetime=250)
 
-# Logic that you write
+#MAIN
 def main():
-    print("Display Update")
-    temp = count
+    time.sleep(0.1)
+    temp = count #Setup a tempory variable
 
+    #Determine MSB
     if temp >= 4:
         GPIO.output(led2, GPIO.HIGH)
         temp -= 4
     else:
         GPIO.output(led2, GPIO.LOW)
 
+    #Determine the next MSB
     if temp >= 2:
         GPIO.output(led1, GPIO.HIGH)
         temp -= 2
     else:
         GPIO.output(led1, GPIO.LOW)
 
+    #Determine LSB
     if temp >= 1:
         GPIO.output(led0, GPIO.HIGH)
         temp -= 1
     else:
         GPIO.output(led0, GPIO.LOW)
 
-
-
-
-# Only run the functions if 
+#Check if running directly or imported
 if __name__ == "__main__":
     # Make sure the GPIO is stopped correctly
     try:
