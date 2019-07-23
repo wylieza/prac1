@@ -18,10 +18,14 @@ GPIO.setmode(GPIO.BOARD)
 led0 = 11
 led1 = 13
 led2 = 15
+btn0 = 16
+btn1 = 18
 
 GPIO.setup(led0, GPIO.OUT)
 GPIO.setup(led1, GPIO.OUT)
 GPIO.setup(led2, GPIO.OUT)
+GPIO.setup(btn0, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(btn1, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 #interrupts
 #GPIO.add_event_detect(BTN_B, GPIO.RISING, method_on_interrupt)
@@ -30,10 +34,11 @@ GPIO.setup(led2, GPIO.OUT)
 # Logic that you write
 def main():
     print("write your logic here my dude")
-    GPIO.output(led0, GPIO.HIGH)
-    time.sleep(1)
+    if GPIO.input(btn0) == GPIO.HIGH:
+        GPIO.output(led0, GPIO.HIGH)
+
     GPIO.output(led0,GPIO.LOW)
-    time.sleep(1)
+
 
 
 # Only run the functions if 
