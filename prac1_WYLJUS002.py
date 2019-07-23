@@ -27,17 +27,29 @@ GPIO.setup(led2, GPIO.OUT)
 GPIO.setup(btn0, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(btn1, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
+#methods
+def callback_method_btn0(channel):
+    GPIO.output(led0, GPIO.HIGH)
+    print("hello" + str(channel))
+
+def callback_method_btn1(channel):
+    GPIO.output(led0, GPIO.LOW)
+    print("there")
+
+
 #interrupts
 #GPIO.add_event_detect(BTN_B, GPIO.RISING, method_on_interrupt)
-#GPIO.add_event_detect(BTN_PIN, GPIO.FALLING, callback=callback_method(),bouncetime=300)
+GPIO.add_event_detect(btn0, GPIO.FALLING, callback=callback_method_btn0,bouncetime=300)
+GPIO.add_event_detect(btn1, GPIO.FALLING, callback=callback_method_btn1,bouncetime=300)
 
 # Logic that you write
 def main():
     print("write your logic here my dude")
-    if GPIO.input(btn0) == GPIO.HIGH:
-        GPIO.output(led0, GPIO.HIGH)
+    #if GPIO.input(btn0) == GPIO.HIGH:
+     #   GPIO.output(led0, GPIO.HIGH)
 
-    GPIO.output(led0,GPIO.LOW)
+    #GPIO.output(led0,GPIO.LOW)
+    time.sleep(1)
 
 
 
